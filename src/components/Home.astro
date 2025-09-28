@@ -1,79 +1,397 @@
-<div id="container" class="h-screen">
-  <div class="px-14 bg-[#E90246]">
-    <div
-      class="slider relative bg-[url(/upper-bar-bg.png)] w-full h-42 bg-contain reapeat-x"
-    >
-      <div class="absolute top-0 left-0 w-full h-full">
-        <div class="flex justify-between my-9 -mx-10">
-          <img
-            src="./left-button.png"
-            alt="left"
-            class="cursor-pointer hover:translate-y-1 duration-300 active:translate-y-2 h-24"
-          />
-          <img
-            src="./right-button.png"
-            alt="right"
-            class="cursor-pointer hover:translate-y-1 duration-300 active:translate-y-2 h-24"
-          />
+---
+import { events } from "../const/event.ts";
+const initialEvent = events[0];
+const initialSlide = initialEvent?.slides?.[0];
+const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
+---
+
+<div id="container">
+  <div class="bg-[#E90246] relative h-42">
+    <div class="absolute top-0 w-full h-42 px-16">
+      <div
+        class="slider bg-[url(/upper-bar-bg.png)] w-full h-full bg-contain reapeat-x"
+      >
+      </div>
+    </div>
+    <div class="w-full">
+      <div class="relative flex items-center justify-between gap-12">
+        <div class="absolute z-30 left-0 w-16 h-26 ml-24">
+          <div
+            class="h-full w-full mt-4 bg-gradient-to-r from-[#E90246] to-[#E90246]/0"
+          >
+          </div>
         </div>
+        <button
+          type="button"
+          aria-label="Previous slide"
+          data-carousel-prev
+          class="absolute z-40 flex w-18 items-center justify-center rounded-full bg-transparent transition hover:translate-y-1 active:translate-y-2 mt-8 mx-8"
+        >
+          <img src="./left-button.png" alt="" class="h-full w-full" />
+        </button>
+        <div class="filmstrip-wrapper">
+          <div class="filmstrip-track" data-carousel-thumbs>
+            {
+              events.map((event, index) => (
+                <button
+                  type="button"
+                  class="filmstrip-tile"
+                  data-event-index={index}
+                  data-active={index === 0}
+                  aria-label={`Show event ${index + 1}`}
+                  aria-selected={index === 0}
+                >
+                  <img
+                    src={
+                      event.thumb ??
+                      event.slides?.[0]?.thumb ??
+                      event.slides?.[0]?.big ??
+                      ""
+                    }
+                    alt={event.title}
+                    class="h-full w-full object-cover"
+                  />
+                  <span>{event.title}</span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="absolute z-30 right-0 w-16 h-26 mr-24">
+          <div
+            class="h-full w-full mt-4 bg-gradient-to-l from-[#E90246] to-[#E90246]/0"
+          >
+          </div>
+        </div>
+        <button
+          type="button"
+          aria-label="Next slide"
+          data-carousel-next
+          class="absolute right-0 z-40 flex w-18 items-center justify-center rounded-full bg-transparent transition hover:translate-y-1 active:translate-y-2 mt-8 mx-8"
+        >
+          <img src="./right-button.png" alt="" class="h-full w-full" />
+        </button>
       </div>
     </div>
   </div>
-  <main class="home pt-8">
-    <div class="mx-24">
-      <div class="flex justify-center w-full">
-        <div
-          class="w-full h-[50vh] overflow-hidden bg-[url(https://m1r.ai/ajR6.png)] bg-cover bg-top"
-        >
-        </div>
-      </div>
-      <div class="flex mt-6 gap-8">
-        <div class="flex gap-4 w-1/2">
-          <div>
-            <img src="/ollie-blink.gif" class="w-80" alt="" />
-          </div>
-          <div>
-            <div>
-              <img src="/logo.png" alt="" class="w-48" />
-            </div>
-            <div class="flex justify-between gap-8 mt-4">
-              <div class="relative">
-                <img
-                  src="/button-submission-hover.png"
-                  alt=""
-                  class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
-                />
-                <img src="/button-submission.png" alt="" class="w-64" />
-              </div>
-              <div class="relative">
-                <img
-                  src="/button-whosollie-hover.png"
-                  alt=""
-                  class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
-                />
-                <img src="/button-whosollie.png" alt="" class="w-64" />
-              </div>
-              <div class="relative">
-                <img
-                  src="/button-credits-hover.png"
-                  alt=""
-                  class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
-                />
-                <img src="/button-credits.png" alt="" class="w-64" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="text-white text-4xl w-1/2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor
-          <div class="text-right">-Wild Zomball</div>
-        </div>
-      </div>
-    </div>
-    <div class="text-white bg-[#E90246] text-center py-4 h-full">
-      Not affiliated with COVER Corp., hololive, or holostars talents in any
-      way.
-    </div>
-  </main>
 </div>
+<main class="home pt-8">
+  <div class="mx-24">
+    <div class="flex justify-center w-full">
+      <div class="relative w-full max-w-6xl" data-carousel>
+        <div class="relative h-[50vh] overflow-hidden rounded-lg bg-black">
+          <img
+            data-active-image
+            src={initialSlide?.big}
+            alt={initialSlide?.title ?? "Event slide"}
+            class="h-full w-full object-cover"
+          />
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black via-black/50 to-transparent p-6 text-white"
+          >
+            <div
+              class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+            >
+              <div class="space-y-2 max-w-3xl">
+                <p class="text-sm uppercase tracking-[0.35em]" data-event-date>
+                  {initialEvent?.date}
+                </p>
+                <h2 class="text-3xl font-bold md:text-4xl" data-active-title>
+                  {initialSlide?.title ?? ""}
+                </h2>
+                <p class="text-lg md:text-xl" data-active-desc>
+                  {initialSlide?.desc ?? ""}
+                </p>
+              </div>
+              <div class="space-y-1 text-sm text-white/80 md:text-right">
+                <p
+                  class="font-semibold uppercase tracking-[0.2em]"
+                  data-event-title
+                >
+                  {initialEvent?.title}
+                </p>
+                <p data-active-credit>{initialSlide?.credit ?? ""}</p>
+                <p data-slide-counter>
+                  {`1 / ${initialEvent?.slides?.length ?? 0}`}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex mt-6 gap-8">
+      <div class="flex gap-4 w-1/2">
+        <div>
+          <img src="/ollie-blink.gif" class="w-80" alt="" />
+        </div>
+        <div>
+          <div>
+            <img src="/logo.png" alt="" class="w-48" />
+          </div>
+          <div class="flex justify-between gap-8 mt-4">
+            <div class="relative">
+              <img
+                src="/button-submission-hover.png"
+                alt=""
+                class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
+              />
+              <img src="/button-submission.png" alt="" class="w-64" />
+            </div>
+            <div class="relative">
+              <img
+                src="/button-whosollie-hover.png"
+                alt=""
+                class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
+              />
+              <img src="/button-whosollie.png" alt="" class="w-64" />
+            </div>
+            <div class="relative">
+              <img
+                src="/button-credits-hover.png"
+                alt=""
+                class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
+              />
+              <img src="/button-credits.png" alt="" class="w-64" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-white text-4xl w-1/2">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor
+        <div class="text-right">-Wild Zomball</div>
+      </div>
+    </div>
+  </div>
+  <div class="text-white bg-[#E90246] text-center py-4 h-full">
+    Not affiliated with COVER Corp., hololive, or holostars talents in any way.
+  </div>
+</main>
+
+<script type="application/json" id="events-data" set:html={eventsJson} />
+
+<script>
+  const container = document.querySelector("[data-carousel]");
+  const eventButtons = Array.from(
+    document.querySelectorAll("[data-event-index]")
+  );
+  const prevButtons = Array.from(
+    document.querySelectorAll("[data-carousel-prev]")
+  );
+  const nextButtons = Array.from(
+    document.querySelectorAll("[data-carousel-next]")
+  );
+
+  let events = [];
+
+  const dataElement = document.getElementById("events-data");
+  const serialized = dataElement?.textContent;
+
+  if (serialized) {
+    try {
+      events = JSON.parse(serialized);
+    } catch (error) {
+      console.error("Unable to load event data", error);
+    }
+  }
+
+  if (!container || !events.length || !eventButtons.length) {
+    console.warn("Carousel missing required data");
+  } else {
+    const mainImage = container.querySelector("[data-active-image]");
+    const titleEl = container.querySelector("[data-active-title]");
+    const descEl = container.querySelector("[data-active-desc]");
+    const creditEl = container.querySelector("[data-active-credit]");
+    const dateEl = container.querySelector("[data-event-date]");
+    const eventTitleEl = container.querySelector("[data-event-title]");
+    const counterEl = container.querySelector("[data-slide-counter]");
+
+    let activeEventIndex = 0;
+    let activeSlideIndex = 0;
+
+    const getEventByIndex = (index) => events[index] ?? null;
+
+    const updateEventButtonsState = () => {
+      eventButtons.forEach((button, index) => {
+        const isActive = index === activeEventIndex;
+        button.dataset.active = String(isActive);
+        button.setAttribute("aria-selected", String(isActive));
+      });
+
+      const activeButton = eventButtons[activeEventIndex];
+      if (activeButton) {
+        activeButton.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    };
+
+    const setActiveSlide = (requestedIndex, eventOverride) => {
+      const currentEvent = eventOverride ?? getEventByIndex(activeEventIndex);
+
+      if (
+        !currentEvent ||
+        !Array.isArray(currentEvent.slides) ||
+        !currentEvent.slides.length
+      ) {
+        return;
+      }
+
+      const slideCount = currentEvent.slides.length;
+      const nextIndex =
+        ((requestedIndex % slideCount) + slideCount) % slideCount;
+      const slide = currentEvent.slides[nextIndex];
+
+      if (!slide) return;
+
+      activeSlideIndex = nextIndex;
+
+      if (mainImage) {
+        mainImage.src = slide.big;
+        mainImage.alt = slide.title || "Event slide";
+      }
+
+      if (titleEl) titleEl.textContent = slide.title || "";
+      if (descEl) descEl.textContent = slide.desc || "";
+      if (creditEl) creditEl.textContent = slide.credit || "";
+      if (dateEl) dateEl.textContent = currentEvent.date || "";
+      if (eventTitleEl) eventTitleEl.textContent = currentEvent.title || "";
+      if (counterEl) counterEl.textContent = `${nextIndex + 1} / ${slideCount}`;
+    };
+
+    const setActiveEvent = (requestedIndex) => {
+      const eventCount = events.length;
+      if (!eventCount) return;
+
+      const nextIndex =
+        ((requestedIndex % eventCount) + eventCount) % eventCount;
+      const eventData = getEventByIndex(nextIndex);
+
+      if (
+        !eventData ||
+        !Array.isArray(eventData.slides) ||
+        !eventData.slides.length
+      ) {
+        return;
+      }
+
+      activeEventIndex = nextIndex;
+      activeSlideIndex = 0;
+
+      updateEventButtonsState();
+      setActiveSlide(activeSlideIndex, eventData);
+    };
+
+    eventButtons.forEach((button, index) => {
+      button.addEventListener("click", () => setActiveEvent(index));
+      button.addEventListener("keydown", (domEvent) => {
+        if (domEvent.key === "Enter" || domEvent.key === " ") {
+          domEvent.preventDefault();
+          setActiveEvent(index);
+        }
+      });
+    });
+
+    prevButtons.forEach((button) => {
+      button.addEventListener("click", () =>
+        setActiveEvent(activeEventIndex - 1)
+      );
+    });
+
+    nextButtons.forEach((button) => {
+      button.addEventListener("click", () =>
+        setActiveEvent(activeEventIndex + 1)
+      );
+    });
+
+    setActiveEvent(activeEventIndex);
+  }
+</script>
+
+<style>
+  .filmstrip-wrapper {
+    position: relative;
+    justify-content: center;
+    width: 100%;
+    margin-top: 34px;
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+
+  .filmstrip-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    width: %;
+    background: transparent;
+    overflow-x: hidden;
+    overflow-y: visible;
+    scroll-snap-type: x proximity;
+  }
+
+  .filmstrip-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filmstrip-tile {
+    flex: 0 0 148px;
+    height: 96px;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    background: rgba(233, 2, 70, 0.25);
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+    scroll-snap-align: center;
+    position: relative;
+  }
+
+  .filmstrip-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.65;
+    transition: opacity 0.2s ease;
+  }
+
+  .filmstrip-tile span {
+    position: relative;
+    z-index: 1;
+    line-height: 1.25;
+  }
+
+  [data-event-index][data-active="true"] {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(233, 2, 70, 0.45);
+  }
+
+  [data-event-index][data-active="true"] img {
+    opacity: 1;
+  }
+
+  [data-event-index][data-active="true"] span {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+  }
+
+  [data-event-index]:hover {
+    transform: translateY(-4px);
+  }
+</style>
