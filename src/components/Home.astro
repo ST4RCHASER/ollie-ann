@@ -1,15 +1,17 @@
 ---
-import { events } from "../const/event.ts";
+import { events } from "../const/event.astro";
 const initialEvent = events[0];
 const initialSlide = initialEvent?.slides?.[0];
-const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
+const eventsJson = JSON.stringify(events)
+  .replace(/<\/script/gi, "<\\/script")
+  .replace(/</g, "\\u003c");
 ---
 
 <div id="container">
   <div class="bg-[#E90246] relative h-42">
     <div class="absolute top-0 w-full h-42 px-16">
       <div
-        class="slider bg-[url(/upper-bar-bg.png)] w-full h-full bg-contain reapeat-x"
+        class="slider bg-[url(/upper-bar-bg.png)] w-full h-full bg-repeat-x bg-center sm:bg-contain"
       >
       </div>
     </div>
@@ -79,7 +81,7 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
 <main class="home pt-8">
   <div class="mx-24">
     <div class="flex justify-center w-full">
-      <div class="relative w-full max-w-6xl" data-carousel>
+      <div class="relative w-full max-w-[95vw]" data-carousel>
         <div class="relative h-[50vh] overflow-hidden rounded-lg bg-black">
           <img
             data-active-image
@@ -87,8 +89,42 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
             alt={initialSlide?.title ?? "Event slide"}
             class="h-full w-full object-cover"
           />
+          <button
+            type="button"
+            aria-label="Previous slide"
+            data-slide-prev
+            class="absolute left-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center transition focus:outline-none hover:-translate-x-1"
+            style="display: none;"
+          >
+            <img src="./left-arrow.png" alt="Previous slide" class="w-8" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next slide"
+            data-slide-next
+            class="absolute right-6 top-1/2 z-20 -translate-y-1/2 flex items-center justify-center transition focus:outline-none hover:translate-x-1"
+            style="display: none;"
+          >
+            <img src="./right-arrow.png" alt="Next slide" class="w-8" />
+          </button>
+          <button
+            type="button"
+            aria-label="View full image"
+            data-slide-lightbox
+            class="absolute right-6 top-6 z-20 flex h-10 items-center justify-center rounded-full bg-black/55 p-2 shadow-lg transition hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/70"
+          >
+            <img src="./magnifier.png" alt="View full image" class="w-6" />
+          </button>
+          <div
+            class="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3"
+            data-slide-dots
+            role="tablist"
+            aria-label="Event slides"
+          >
+          </div>
           <div
             class="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black via-black/50 to-transparent p-6 text-white"
+            data-slide-content
           >
             <div
               class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
@@ -139,36 +175,63 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
               />
               <img src="/button-submission.png" alt="" class="w-64" />
             </div>
-            <div class="relative">
+            <a
+              href="https://hololive.hololivepro.com/en/talents/kureiji-ollie/"
+              target="_blank"
+              class="relative"
+            >
               <img
                 src="/button-whosollie-hover.png"
                 alt=""
                 class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
               />
               <img src="/button-whosollie.png" alt="" class="w-64" />
-            </div>
-            <div class="relative">
+            </a>
+            <a class="relative" href="/credits">
               <img
                 src="/button-credits-hover.png"
                 alt=""
                 class="w-64 absolute opacity-0 hover:opacity-100 duration-300"
               />
               <img src="/button-credits.png" alt="" class="w-64" />
-            </div>
+            </a>
           </div>
         </div>
       </div>
-      <div class="text-white text-4xl w-1/2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor
-        <div class="text-right">-Wild Zomball</div>
-      </div>
+      <div
+        class="text-white text-4xl w-1/2"
+        data-event-desc
+        set:html={initialEvent?.desc}
+      />
     </div>
   </div>
   <div class="text-white bg-[#E90246] text-center py-4 h-full">
     Not affiliated with COVER Corp., hololive, or holostars talents in any way.
   </div>
 </main>
+
+<div
+  data-lightbox
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-6"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Slide full image"
+>
+  <button
+    type="button"
+    data-lightbox-close
+    class="text-3xl absolute right-8 top-8 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white shadow focus:outline-none focus:ring-2 focus:ring-white/70"
+    aria-label="Close image"
+  >
+    ×
+  </button>
+  <img
+    data-lightbox-image
+    src={initialSlide?.big}
+    alt={initialSlide?.title ?? "Event slide"}
+    class="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-2xl"
+  />
+</div>
 
 <script type="application/json" id="events-data" set:html={eventsJson} />
 
@@ -183,8 +246,20 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
   const nextButtons = Array.from(
     document.querySelectorAll("[data-carousel-next]")
   );
+  const slidePrevButton = container?.querySelector("[data-slide-prev]");
+  const slideNextButton = container?.querySelector("[data-slide-next]");
+  const slideDotsContainer = container?.querySelector("[data-slide-dots]");
+  const slideContent = container?.querySelector("[data-slide-content]");
+  const lightboxButton = container?.querySelector("[data-slide-lightbox]");
+  const lightbox = document.querySelector("[data-lightbox]");
+  const lightboxImage = lightbox?.querySelector("[data-lightbox-image]");
+  const lightboxClose = lightbox?.querySelector("[data-lightbox-close]");
 
   let events = [];
+  let slideDotButtons = [];
+  let autoSlideTimer;
+  let isLightboxOpen = false;
+  const AUTO_SLIDE_INTERVAL = 6500;
 
   const dataElement = document.getElementById("events-data");
   const serialized = dataElement?.textContent;
@@ -205,6 +280,7 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
     const descEl = container.querySelector("[data-active-desc]");
     const creditEl = container.querySelector("[data-active-credit]");
     const dateEl = container.querySelector("[data-event-date]");
+    const descEventEl = document.querySelector("[data-event-desc]");
     const eventTitleEl = container.querySelector("[data-event-title]");
     const counterEl = container.querySelector("[data-slide-counter]");
 
@@ -230,6 +306,42 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
       }
     };
 
+    const scheduleAutoSlide = () => {
+      clearTimeout(autoSlideTimer);
+
+      const currentEvent = getEventByIndex(activeEventIndex);
+      if (
+        !currentEvent ||
+        !Array.isArray(currentEvent.slides) ||
+        currentEvent.slides.length <= 1 ||
+        isLightboxOpen
+      ) {
+        return;
+      }
+
+      autoSlideTimer = window.setTimeout(() => {
+        const latestEvent = getEventByIndex(activeEventIndex);
+        if (
+          !latestEvent ||
+          !Array.isArray(latestEvent.slides) ||
+          latestEvent.slides.length <= 1
+        ) {
+          return;
+        }
+
+        setActiveSlide(activeSlideIndex + 1, latestEvent);
+      }, AUTO_SLIDE_INTERVAL);
+    };
+
+    const closeLightbox = () => {
+      if (!lightbox) return;
+      isLightboxOpen = false;
+      lightbox.classList.add("hidden");
+      lightbox.classList.remove("flex");
+      document.body.classList.remove("overflow-hidden");
+      scheduleAutoSlide();
+    };
+
     const setActiveSlide = (requestedIndex, eventOverride) => {
       const currentEvent = eventOverride ?? getEventByIndex(activeEventIndex);
 
@@ -244,9 +356,26 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
       const slideCount = currentEvent.slides.length;
       const nextIndex =
         ((requestedIndex % slideCount) + slideCount) % slideCount;
+      const previousIndex = activeSlideIndex;
       const slide = currentEvent.slides[nextIndex];
 
       if (!slide) return;
+
+      const isWrapForward = previousIndex === slideCount - 1 && nextIndex === 0;
+      const isWrapBackward =
+        previousIndex === 0 && nextIndex === slideCount - 1;
+
+      let direction = "none";
+
+      if (nextIndex !== previousIndex) {
+        if (isWrapForward) {
+          direction = "forward";
+        } else if (isWrapBackward) {
+          direction = "backward";
+        } else {
+          direction = nextIndex > previousIndex ? "forward" : "backward";
+        }
+      }
 
       activeSlideIndex = nextIndex;
 
@@ -259,8 +388,72 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
       if (descEl) descEl.textContent = slide.desc || "";
       if (creditEl) creditEl.textContent = slide.credit || "";
       if (dateEl) dateEl.textContent = currentEvent.date || "";
+      if (descEventEl) descEventEl.setHTMLUnsafe(currentEvent.desc || "");
       if (eventTitleEl) eventTitleEl.textContent = currentEvent.title || "";
       if (counterEl) counterEl.textContent = `${nextIndex + 1} / ${slideCount}`;
+
+      if (lightboxImage) {
+        lightboxImage.src = slide.big;
+        lightboxImage.alt = slide.title || "Event slide";
+      }
+
+      slideDotButtons.forEach((dot, index) => {
+        const isActive = index === nextIndex;
+        dot.dataset.active = String(isActive);
+        dot.setAttribute("aria-selected", String(isActive));
+      });
+
+      const animateTargets = [mainImage, slideContent];
+      animateTargets.forEach((target) => {
+        if (!target) return;
+        target.classList.remove("slide-forward", "slide-backward");
+        void target.offsetWidth;
+        if (direction === "forward") {
+          target.classList.add("slide-forward");
+        } else if (direction === "backward") {
+          target.classList.add("slide-backward");
+        }
+      });
+
+      scheduleAutoSlide();
+    };
+
+    const renderSlideDots = (eventData) => {
+      if (!slideDotsContainer) return;
+
+      slideDotsContainer.innerHTML = "";
+      slideDotButtons = [];
+
+      const slides = Array.isArray(eventData?.slides) ? eventData.slides : [];
+      const hasMultiple = slides.length > 1;
+
+      if (slidePrevButton) {
+        slidePrevButton.style.display = hasMultiple ? "flex" : "none";
+      }
+      if (slideNextButton) {
+        slideNextButton.style.display = hasMultiple ? "flex" : "none";
+      }
+
+      if (!hasMultiple) {
+        clearTimeout(autoSlideTimer);
+        return;
+      }
+
+      slides.forEach((slide, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.dataset.slideIndex = String(index);
+        dot.dataset.active = String(index === 0);
+        dot.setAttribute("aria-label", `Show slide ${index + 1}`);
+        dot.setAttribute("aria-selected", index === 0 ? "true" : "false");
+        dot.setAttribute("role", "tab");
+        dot.className = "carousel-dot";
+        dot.addEventListener("click", () => setActiveSlide(index, eventData));
+        slideDotsContainer.appendChild(dot);
+        slideDotButtons.push(dot);
+      });
+
+      scheduleAutoSlide();
     };
 
     const setActiveEvent = (requestedIndex) => {
@@ -283,17 +476,63 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
       activeSlideIndex = 0;
 
       updateEventButtonsState();
+      renderSlideDots(eventData);
       setActiveSlide(activeSlideIndex, eventData);
     };
 
     eventButtons.forEach((button, index) => {
-      button.addEventListener("click", () => setActiveEvent(index));
+      button.addEventListener("click", () => {
+        if (isLightboxOpen) closeLightbox();
+        setActiveEvent(index);
+      });
       button.addEventListener("keydown", (domEvent) => {
         if (domEvent.key === "Enter" || domEvent.key === " ") {
           domEvent.preventDefault();
+          if (isLightboxOpen) closeLightbox();
           setActiveEvent(index);
         }
       });
+    });
+
+    if (slidePrevButton) {
+      slidePrevButton.addEventListener("click", () =>
+        setActiveSlide(activeSlideIndex - 1)
+      );
+    }
+
+    if (slideNextButton) {
+      slideNextButton.addEventListener("click", () =>
+        setActiveSlide(activeSlideIndex + 1)
+      );
+    }
+
+    if (lightboxButton && lightbox) {
+      lightboxButton.addEventListener("click", () => {
+        if (!lightboxImage) return;
+        clearTimeout(autoSlideTimer);
+        isLightboxOpen = true;
+        lightbox.classList.remove("hidden");
+        lightbox.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
+      });
+    }
+
+    if (lightboxClose) {
+      lightboxClose.addEventListener("click", closeLightbox);
+    }
+
+    if (lightbox) {
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isLightboxOpen) {
+        closeLightbox();
+      }
     });
 
     prevButtons.forEach((button) => {
@@ -327,11 +566,10 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
     display: flex;
     align-items: center;
     gap: 24px;
-    width: %;
     background: transparent;
     overflow-x: hidden;
-    overflow-y: visible;
     scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
   }
 
   .filmstrip-track::-webkit-scrollbar {
@@ -393,5 +631,57 @@ const eventsJson = JSON.stringify(events).replace(/</g, "\\u003c");
 
   [data-event-index]:hover {
     transform: translateY(-4px);
+  }
+
+  .carousel-dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    background: transparent;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .carousel-dot:hover {
+    transform: scale(1.1);
+  }
+
+  .carousel-dot[data-active="true"] {
+    background: #ffffff;
+    border-color: #ffffff;
+    transform: scale(1.25);
+  }
+
+  .slide-forward {
+    animation: slideForward 0.45s ease both;
+  }
+
+  .slide-backward {
+    animation: slideBackward 0.45s ease both;
+  }
+
+  @keyframes slideForward {
+    from {
+      transform: translateX(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideBackward {
+    from {
+      transform: translateX(-40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 </style>
