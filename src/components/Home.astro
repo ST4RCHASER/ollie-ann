@@ -68,7 +68,9 @@ const eventsJson = JSON.stringify(events)
                                         alt={event.title}
                                         class="h-full w-full object-cover"
                                     />
-                                    <span>{event.title}</span>
+                                    <span class="text-[12px]">
+                                        {event.title}
+                                    </span>
                                 </button>
                             ))
                         }
@@ -207,7 +209,7 @@ const eventsJson = JSON.stringify(events)
         </div>
         <div
             class="text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl w-full lg:w-1/2 items-center md:hidden flex mt-2"
-            data-event-desc
+            data-event-desc2
             set:html={initialEvent?.desc}
         />
         <div
@@ -367,6 +369,7 @@ const eventsJson = JSON.stringify(events)
         const creditEl = container.querySelector("[data-active-credit]");
         const dateEl = container.querySelector("[data-event-date]");
         const descEventEl = document.querySelector("[data-event-desc]");
+        const descEventEl2 = document.querySelector("[data-event-desc2]");
         const eventTitleEl = container.querySelector("[data-event-title]");
         const counterEl = container.querySelector("[data-slide-counter]");
 
@@ -478,6 +481,8 @@ const eventsJson = JSON.stringify(events)
             if (creditEl) creditEl.textContent = slide.credit || "";
             if (dateEl) dateEl.textContent = currentEvent.date || "";
             if (descEventEl) descEventEl.setHTMLUnsafe(currentEvent.desc || "");
+            if (descEventEl2)
+                descEventEl2.setHTMLUnsafe(currentEvent.desc || "");
             if (eventTitleEl)
                 eventTitleEl.textContent = currentEvent.title || "";
             if (counterEl)

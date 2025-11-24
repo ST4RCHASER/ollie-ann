@@ -1,145 +1,141 @@
 ---
-export const events = [
-    {
-        title: "Kureiji Ollie's Debut!",
-        date: "Dec 4, 2020",
-        thumb: "https://m1r.ai/HzmQn.png",
-        desc: `
-    <div>
-      It was an exciting day, a zombie idol is about to shake the world, starting from this moment!
-      <div class="text-right">- altersky</div>
-    </div>
-  `,
-        slides: [
-            {
-                big: "https://m1r.ai/HzmQn.png",
-                thumb: "https://m1r.ai/HzmQn.png",
-                title: "Kureiji Ollie's Debut!",
-                desc: "It was an exciting day, a zombie idol is about to shake the world, starting from this moment!",
-                credit: "- altersky",
-            },
-        ],
-    },
-    {
-        title: "Ollie's Do Not Subscribe 1,000,000",
-        date: "Oct 24, 2022",
-        thumb: "https://m1r.ai/MkKoz.jpg",
-        desc: `
-    <div>
-    For Ollie's 1,000,000 subscriber milestone, Ollie streamed an Unsubathon : a unique subathon where the goal is to get people to unsubscribe to delay her milestone. This did not work.
-      <div class="text-right">- Andrew!</div>
-    </div>
-  `,
-        slides: [
-            {
-                big: "https://m1r.ai/MkKoz.jpg",
-                thumb: "https://m1r.ai/MkKoz.jpg",
-                title: "Ollie's Do Not Subscribe 1,000,000",
-                desc: "For Ollie's 1,000,000 subscriber milestone, Ollie streamed an Unsubathon : a unique subathon where the goal is to get people to unsubscribe to delay her milestone. This did not work.",
-                credit: "altersky",
-            },
-            {
-                big: "https://m1r.ai/sHgl.jpg",
-                thumb: "https://m1r.ai/sHgl.jpg",
-                title: "For Ollie's 1,000,000 subscriber milestone, Ollie streamed an Unsubathon : a unique subathon where the goal is to get people to unsubscribe to delay her milestone. This did not work.",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-        ],
-    },
-    {
-        title: "Olivia Debut",
-        date: "Jul 10, 2021",
-        thumb: "https://m1r.ai/cmChn.jpg",
-        desc: `
-    <div>
-    Ollie's alternate world / parallel fiction self, Olivia debuted! This is the first opening of Ollie's alternate world portal.
-      <div class="text-right">- Andrew!</div>
-    </div>
-  `,
-        slides: [
-            {
-                big: "https://m1r.ai/cmChn.jpg",
-                thumb: "https://m1r.ai/cmChn.jpg",
-                title: "hololive STAGE World Tour ’25",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-        ],
-    },
-    {
-        title: "Open Membership",
-        date: "Mar 7, 2021",
-        thumb: "https://m1r.ai/2GAt.jpg",
-        desc: `
-    <div>
-    Kureiji Ollie opened her YouTube channel membership with a burst of chaotic charm and heartfelt energy, inviting fans to officially become part of the Zomily—her beloved community of supporters.
-      <div class="text-right">- AkaneDoko</div>
-    </div>
-  `,
-        slides: [
-            {
-                big: "https://m1r.ai/2GAt.jpg",
-                thumb: "https://m1r.ai/2GAt.jpg",
-                title: "hololive STAGE World Tour ’25",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-            {
-                big: "https://m1r.ai/T2VI.png",
-                thumb: "https://m1r.ai/T2VI.png",
-                title: "hololive STAGE World Tour ’25",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-        ],
-    },
-    {
-        title: "2nd Outfit Reveal",
-        date: "Aug 16, 2021",
-        thumb: "https://m1r.ai/8tpcR.jpg",
-        desc: `
-    <div>
-    Kureiji Ollie’s second outfit reveal, a dazzling celebration of Indonesian heritage, fashion, and chaotic charm, inspired by traditional Indonesian and Javanese motifs—complete with vibrant patterns, ceremonial flair, and even bridal aesthetics.
-      <div class="text-right">- AkaneDoko</div>
-    </div>
-  `,
-        slides: [
-            {
-                big: "https://m1r.ai/8tpcR.jpg",
-                thumb: "https://m1r.ai/8tpcR.jpg",
-                title: "hololive STAGE World Tour ’25",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-            {
-                big: "https://m1r.ai/lUhZb.png",
-                thumb: "https://m1r.ai/lUhZb.png",
-                title: "hololive STAGE World Tour ’25",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-        ],
-    },
-    {
-        title: "Mama Lillie debut",
-        date: "Apr 1, 2022",
-        thumb: "https://m1r.ai/kOhiW.jpg",
-        desc: `
-    <div>
-    Mama Lillie’s debut on Ollie’s channel. Streamed on April 1st, 2022, the event was no prank—it was a heartfelt, hilarious, and emotionally rich stream where Ollie introduced her real-life mother to fans.
-      <div class="text-right">- AkaneDoko</div>
-    </div>
-  `,
-        slides: [
-            {
-                big: "https://m1r.ai/kOhiW.jpg",
-                thumb: "https://m1r.ai/kOhiW.jpg",
-                title: "hololive STAGE World Tour ’25",
-                desc: "—Synchronize— · July–December 2025",
-                credit: "@hololivetv",
-            },
-        ],
-    },
+import Layout from "../layouts/Layout.astro";
+
+const team = [
+    { role: "Project owner/Project manager", name: "AkaneDoko" },
+    { role: "Project coordinator", name: "ShowKunz" },
+    { role: "Web developer", name: "starchaser" },
+    { role: "Web design/Artist", name: "Altersky" },
+    { role: "Domain contributor", name: "Andrew" },
 ];
+
+const specialThanks = [
+    "Special thanks to our beloved oshi. Super Kawaii Zombie Idol - Kureiji Ollie!",
+];
+
+const donors = [
+    "mCooperative",
+    "Hipo",
+    "Oh Deer",
+    "Salocin",
+    "zebesian",
+    "Jiří K",
+    "SUUGAKUHAKASE",
+    "Sandro",
+    "IceWhale",
+    "silentnerv",
+    "Sorin Sorrel",
+    "Trevor",
+    "ChaoticHarlequin",
+    "Ha//voq",
+    "Salade",
+    "TheDiablo",
+    "DerAndi",
+    "nesabao",
+    "NoxCaelis",
+    "火犬",
+    "Anon",
+    "TAPEt",
+    "Rrazz",
+].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: "base", numeric: true }),
+);
 ---
+
+<Layout>
+    <div class="home min-h-screen">
+        <main class="min-h-screen flex flex-col">
+            <div class="text-[4rem] text-center text-white">Credits</div>
+
+            <div
+                class="bg-white/50 rounded-2xl max-w-7xl mx-auto p-8 mb-4 w-full"
+            >
+                <div class="grid gap-8">
+                    <!-- Team -->
+                    <section class="space-y-4">
+                        <h3
+                            class="text-3xl font-extrabold tracking-tight text-gray-900"
+                        >
+                            Team
+                        </h3>
+                        <div
+                            class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-gray-900"
+                        >
+                            {
+                                team.map(({ role, name }) => (
+                                    <div class="flex items-start gap-3 rounded-xl bg-white/70 p-4">
+                                        <div class="h-2.5 w-2.5 mt-2 rounded-full bg-pink-400/80 shrink-0" />
+                                        <div class="leading-tight">
+                                            <div class="font-semibold">
+                                                {role}
+                                            </div>
+                                            <div class="text-gray-700">
+                                                {name}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </section>
+
+                    <!-- Special Thanks -->
+                    <section class="space-y-4">
+                        <h3
+                            class="text-3xl font-extrabold tracking-tight text-gray-900"
+                        >
+                            Special Thanks
+                        </h3>
+                        <div
+                            class="rounded-2xl bg-gradient-to-br from-white/80 to-white/60 p-6"
+                        >
+                            <ul class="space-y-2 text-gray-900">
+                                {
+                                    specialThanks.map((line) => (
+                                        <li class="flex items-start gap-3">
+                                            <span class="mt-1 h-2 w-6 rounded bg-pink-400/70 inline-block" />
+                                            <span class="text-lg">{line}</span>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Donors -->
+                    <section class="space-y-4">
+                        <div
+                            class="flex items-center justify-between flex-wrap gap-3"
+                        >
+                            <h3
+                                class="text-3xl font-extrabold tracking-tight text-gray-900"
+                            >
+                                Donators
+                            </h3>
+                            <div class="text-sm text-gray-700/90">
+                                Total: {donors.length.toLocaleString()}
+                            </div>
+                        </div>
+
+                        <div
+                            class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                        >
+                            {
+                                donors.map((name) => (
+                                    <div class="rounded-xl bg-white/70 px-4 py-3 text-gray-900 shadow-sm hover:shadow transition-shadow">
+                                        {name}
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="text-white text-center py-4">
+                Not affiliated with COVER Corp., hololive, or holostars talents
+                in any way.
+            </div>
+        </main>
+    </div>
+</Layout>
