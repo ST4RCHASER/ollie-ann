@@ -1,141 +1,523 @@
 ---
-import Layout from "../layouts/Layout.astro";
+export type EventSlide = {
+    big: string;
+    thumb: string;
+    title?: string;
+    desc?: string;
+    credit?: string;
+};
 
-const team = [
-    { role: "Project owner/Project manager", name: "AkaneDoko" },
-    { role: "Project coordinator", name: "ShowKunz" },
-    { role: "Web developer", name: "starchaser" },
-    { role: "Web design/Artist", name: "Altersky" },
-    { role: "Domain contributor", name: "Andrew" },
+export type EventItem = {
+    id: number; // event id (matches folder id)
+    title: string;
+    date: string; // "MMM D, YYYY"
+    thumb: string; // must equal slides[0].big
+    desc: string; // HTML string
+    slides: EventSlide[];
+};
+
+// Sorted oldest -> newest for ids: 1 2 3 4 5 6 8 10 11 13 14 15 16 17 24 26 27 28
+
+export const events: EventItem[] = [
+    // 1 — Dec 4, 2020
+    {
+        id: 1,
+        title: "Kureiji Ollie's Debut!",
+        date: "Dec 4, 2020",
+        thumb: "/events/1/zomrade - ollie - Altersky skyraze.png",
+        desc: `
+<div>
+It was an exciting day, a zombie idol is about to shake the world,
+starting from this moment!
+<div class="text-right">- altersky</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/1/zomrade - ollie - Altersky skyraze.png",
+                thumb: "/events/1/zomrade - ollie - Altersky skyraze.png",
+                credit: "altersky",
+            },
+        ],
+    },
+
+    // 4 — Mar 7, 2021
+    {
+        id: 4,
+        title: "Open Membership",
+        date: "Mar 7, 2021",
+        thumb: "/events/4/member - Akane.jpg",
+        desc: `
+<div>
+Kureiji Ollie opened her YouTube channel membership with a burst of chaotic
+charm and heartfelt energy, inviting fans to officially become part of the
+Zomily—her beloved community of supporters.
+<div class="text-right">- AkaneDoko</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/4/member - Akane.jpg",
+                thumb: "/events/4/member - Akane.jpg",
+                credit: "AkaneDoko",
+            },
+            {
+                big: "/events/4/【MEMBERSHIP】BE A PART OF THE ZOMILY!!!【Hololive Indonesia 2nd Gen】 - YouTube and 4 more pages - Personal - Microsoft_ Edge 28_10_2568 11_01_45 PM - Akane.png",
+                thumb: "/events/4/【MEMBERSHIP】BE A PART OF THE ZOMILY!!!【Hololive Indonesia 2nd Gen】 - YouTube and 4 more pages - Personal - Microsoft_ Edge 28_10_2568 11_01_45 PM - Akane.png",
+                credit: "AkaneDoko",
+            },
+        ],
+    },
+
+    // 5 — Aug 16, 2021
+    {
+        id: 5,
+        title: "2nd Outfit Reveal",
+        date: "Aug 16, 2021",
+        thumb: "/events/5/Outfit2 - Akane.jpg",
+        desc: `
+<div>
+Kureiji Ollie’s second outfit reveal, a dazzling celebration of Indonesian
+heritage, fashion, and chaotic charm, inspired by traditional Indonesian
+and Javanese motifs—complete with vibrant patterns, ceremonial flair, and
+even bridal aesthetics.
+<div class="text-right">- AkaneDoko</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/5/Outfit2 - Akane.jpg",
+                thumb: "/events/5/Outfit2 - Akane.jpg",
+                credit: "AkaneDoko",
+            },
+            {
+                big: "/events/5/【MEMBERSHIP】BE A PART OF THE ZOMILY!!!【Hololive Indonesia 2nd Gen】 - YouTube and 4 more pages - Personal - Microsoft_ Edge 28_10_2568 11_12_03 PM - Akane.png",
+                thumb: "/events/5/【MEMBERSHIP】BE A PART OF THE ZOMILY!!!【Hololive Indonesia 2nd Gen】 - YouTube and 4 more pages - Personal - Microsoft_ Edge 28_10_2568 11_12_03 PM - Akane.png",
+                credit: "AkaneDoko",
+            },
+        ],
+    },
+
+    // 3 — Jul 10, 2021
+    {
+        id: 3,
+        title: "Olivia Debut",
+        date: "Jul 10, 2021",
+        thumb: "/events/3/olivia - Andrew (bricks04).JPG",
+        desc: `
+<div>
+Ollie's alternate world / parallel fiction self, Olivia debuted! This is the
+first opening of Ollie's alternate world portal.
+<div class="text-right">- Andrew!</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/3/olivia - Andrew (bricks04).JPG",
+                thumb: "/events/3/olivia - Andrew (bricks04).JPG",
+                credit: "Andrew!",
+            },
+        ],
+    },
+
+    // 28 — Mar 28, 2022
+    {
+        id: 28,
+        title: "Hololive Special MEDLLIE by Kureiji Ollie",
+        date: "Mar 28, 2022",
+        thumb: "/events/28/Tee ธี_Hololive Special MEDLLIE_Kureiji Ollie - Tee Merae.jpg",
+        desc: `
+<div>
+Hololive Special MEDLLIE premiered as a part of Ollie's 1 million subs
+celebration #MILLIOLLIE.
+<div class="text-right">- Tee ธี</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/28/Tee ธี_Hololive Special MEDLLIE_Kureiji Ollie - Tee Merae.jpg",
+                thumb: "/events/28/Tee ธี_Hololive Special MEDLLIE_Kureiji Ollie - Tee Merae.jpg",
+                credit: "Tee ธี",
+            },
+        ],
+    },
+
+    // 6 — Apr 1, 2022
+    {
+        id: 6,
+        title: "Mama Lillie debut",
+        date: "Apr 1, 2022",
+        thumb: "/events/6/Mama - Akane.jpg",
+        desc: `
+<div>
+Mama Lillie’s debut on Ollie’s channel. Streamed on April 1st, 2022, the
+event was no prank—it was a heartfelt, hilarious, and emotionally rich
+stream where Ollie introduced her real-life mother to fans.
+<div class="text-right">- AkaneDoko</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/6/Mama - Akane.jpg",
+                thumb: "/events/6/Mama - Akane.jpg",
+                credit: "AkaneDoko",
+            },
+            {
+                big: "/events/6/【MEMBERSHIP】BE A PART OF THE ZOMILY!!!【Hololive Indonesia 2nd Gen】 - YouTube and 4 more pages - Personal - Microsoft_ Edge 28_10_2568 11_18_41 PM - Akane.png",
+                thumb: "/events/6/【MEMBERSHIP】BE A PART OF THE ZOMILY!!!【Hololive Indonesia 2nd Gen】 - YouTube and 4 more pages - Personal - Microsoft_ Edge 28_10_2568 11_18_41 PM - Akane.png",
+                credit: "AkaneDoko",
+            },
+        ],
+    },
+
+    // 8 — Feb 3, 2023
+    {
+        id: 8,
+        title: "HoloID Kimono Day 1",
+        date: "Feb 3, 2023",
+        thumb: "/events/8/IMG_1107 - speedMEISTer.png",
+        desc: `
+<div>
+Ollie sets the stage with an explosive and vibrant entrance! Streamed on
+3 Feb 2023, the first to reveal Hololive Indonesia’s kimono outfits!
+<div class="text-right">- speedMEISTer</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/8/IMG_1107 - speedMEISTer.png",
+                thumb: "/events/8/IMG_1107 - speedMEISTer.png",
+                credit: "speedMEISTer",
+            },
+            {
+                big: "/events/8/IMG_1111 - speedMEISTer.png",
+                thumb: "/events/8/IMG_1111 - speedMEISTer.png",
+                credit: "speedMEISTer",
+            },
+        ],
+    },
+
+    // 17 — Apr 27, 2024
+    {
+        id: 17,
+        title: "Ollie Performs at Hololive x Dreamhack Down Under!",
+        date: "Apr 27, 2024",
+        thumb: "/events/17/GLba59hbIAAZLvM - bryce bushnell-cisterna.jpg",
+        desc: `
+<div>
+Ollie performs at the first Hololive concert in the Southern Hemisphere
+during Dreamhack Melbourne 2024! She performs JOLLIE JOLLIE, Q, and
+Blue Clapper!
+<div class="text-right">- bbc ismyname</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/17/GLba59hbIAAZLvM - bryce bushnell-cisterna.jpg",
+                thumb: "/events/17/GLba59hbIAAZLvM - bryce bushnell-cisterna.jpg",
+                credit: "bbc ismyname",
+            },
+        ],
+    },
+
+    // 26 — Oct 13, 2024
+    {
+        id: 26,
+        title: "Ollie's Birthday 2024 REBIRTH",
+        date: "Oct 13, 2024",
+        thumb: "/events/26/rebirth3d_videoframe_2090990 - ShieldZero.png",
+        desc: `
+<div>
+Ollie celebrated her birthday with 3D live stream. In this event she revealed
+a new 3D model called "Goddess of Death and Rebirth". With the new model Ollie
+looked more majestic when performing on stage.
+<div class="text-right">- genericat</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/26/rebirth3d_videoframe_2090990 - ShieldZero.png",
+                thumb: "/events/26/rebirth3d_videoframe_2090990 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/26/rebirth3d_videoframe_1611549 - ShieldZero.png",
+                thumb: "/events/26/rebirth3d_videoframe_1611549 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/26/rebirth3d_videoframe_1807590 - ShieldZero.png",
+                thumb: "/events/26/rebirth3d_videoframe_1807590 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/26/rebirth3d_videoframe_1350474 - ShieldZero.png",
+                thumb: "/events/26/rebirth3d_videoframe_1350474 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/26/rebirth3d_videoframe_2730158 - ShieldZero.png",
+                thumb: "/events/26/rebirth3d_videoframe_2730158 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/26/rebirth3d_videoframe_226113 - ShieldZero.png",
+                thumb: "/events/26/rebirth3d_videoframe_226113 - ShieldZero.png",
+                credit: "genericat",
+            },
+        ],
+    },
+
+    // 16 — Dec 28, 2024
+    {
+        id: 16,
+        title: "Ollie appeared on OozoraPolice2024.",
+        date: "Dec 28, 2024",
+        thumb: "/events/16/Screenshot_20251119_150745_X - 数学博士.jpg",
+        desc: `
+<div>
+Ollie was arrested by Subaru and Hakos in 2024. Ollie said c**nko in her
+stream, and she was reported for that. The listeners decided Ollie was
+guilty, and Ollie was arrested.
+<div class="text-right">- suugakuhakase</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/16/Screenshot_20251119_150745_X - 数学博士.jpg",
+                thumb: "/events/16/Screenshot_20251119_150745_X - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+        ],
+    },
+
+    // 15 — Jan 5, 2025
+    {
+        id: 15,
+        title: "Ollie got 1M followers on Twitter",
+        date: "Jan 5, 2025",
+        thumb: "/events/15/Screenshot_20251119_150025_X - 数学博士.jpg",
+        desc: `
+<div>
+Ollie got 1M followers on Twitter. She bought a cake to celebrate that.
+<div class="text-right">- suugakuhakase</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/15/Screenshot_20251119_150025_X - 数学博士.jpg",
+                thumb: "/events/15/Screenshot_20251119_150025_X - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+            {
+                big: "/events/15/Screenshot_20251119_150223_X - 数学博士.jpg",
+                thumb: "/events/15/Screenshot_20251119_150223_X - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+        ],
+    },
+
+    // 14 — Apr 27, 2025
+    {
+        id: 14,
+        title: "New badges and new stamps for Zomily",
+        date: "Apr 27, 2025",
+        thumb: "/events/14/Screenshot_20251119_143644_X - 数学博士.jpg",
+        desc: `
+<div>
+Zomily got the badges for memberships for 36 months and 48 months.
+<div class="text-right">- suugakuhakase</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/14/Screenshot_20251119_143644_X - 数学博士.jpg",
+                thumb: "/events/14/Screenshot_20251119_143644_X - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+        ],
+    },
+
+    // 11 — May 10, 2025
+    {
+        id: 11,
+        title: "IOLLIE New Accessory Reveal",
+        date: "May 10, 2025",
+        thumb: "/events/11/Screenshot_20251119_141237_YouTube - 数学博士.jpg",
+        desc: `
+<div>
+Here is the schedule of IOLLIE's relay! (WIB/GMT+7)
+• 15:00–16:00 - I'm on Observation Duty
+• 16:30–17:30 - Bread & Fred
+• 18:00–19:00 - PUSHING IT! TOGETHER
+• 19:00–20:30 - Accessory REVEAL!!
+<div class="text-right">- suugakuhakase</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/11/Screenshot_20251119_141237_YouTube - 数学博士.jpg",
+                thumb: "/events/11/Screenshot_20251119_141237_YouTube - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+            {
+                big: "/events/11/Screenshot_20251119_142637_X - 数学博士.jpg",
+                thumb: "/events/11/Screenshot_20251119_142637_X - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+        ],
+    },
+
+    // 24 — Sep 19, 2025
+    {
+        id: 24,
+        title: '#OllieEyesOnMe 2025 "yandere/goth lolita" Outfit Reveal',
+        date: "Sep 19, 2025",
+        thumb: "/events/24/Screenshot_2025-11-19-22-35-08-657_com.google.android.youtube - Eduardo “Fedu”.png",
+        desc: `
+<div>
+New gothic lolita–inspired outfit reveal with eyepatch, spellbook, and giant
+Udin plushie, plus merch: acrylic diorama, badge, itabag, brooch, and a
+voicepack "Dragon Heir: My Assertive Servant" (EN/ID/JP).
+<div class="text-right">- Fedu</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/24/Screenshot_2025-11-19-22-35-08-657_com.google.android.youtube - Eduardo “Fedu”.png",
+                thumb: "/events/24/Screenshot_2025-11-19-22-35-08-657_com.google.android.youtube - Eduardo “Fedu”.png",
+                credit: "Fedu",
+            },
+            {
+                big: "/events/24/Screenshot_2025-11-19-22-35-50-307_com.google.android.youtube - Eduardo “Fedu”.png",
+                thumb: "/events/24/Screenshot_2025-11-19-22-35-50-307_com.google.android.youtube - Eduardo “Fedu”.png",
+                credit: "Fedu",
+            },
+            {
+                big: "/events/24/Screenshot_2025-11-19-22-36-00-840_com.google.android.youtube - Eduardo “Fedu”.png",
+                thumb: "/events/24/Screenshot_2025-11-19-22-36-00-840_com.google.android.youtube - Eduardo “Fedu”.png",
+                credit: "Fedu",
+            },
+            {
+                big: "/events/24/Screenshot_2025-11-19-22-48-30-892_com.google.android.youtube - Eduardo “Fedu”.png",
+                thumb: "/events/24/Screenshot_2025-11-19-22-48-30-892_com.google.android.youtube - Eduardo “Fedu”.png",
+                credit: "Fedu",
+            },
+        ],
+    },
+
+    // 27 — Oct 13, 2025
+    {
+        id: 27,
+        title: "Ollie's Birthday 2025 KoishiteruZOMBIE",
+        date: "Oct 13, 2025",
+        thumb: "/events/27/koishiteruzombie_videoframe_375033 - ShieldZero.png",
+        desc: `
+<div>
+Ollie presented a 3D live stream for celebrating her birthday in 2025.
+Carrying the theme about Ollie's feelings toward her audience, the
+performance showcased a lovely concept, enticing opening, and
+talented singing.
+<div class="text-right">- genericat</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/27/koishiteruzombie_videoframe_375033 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_375033 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_660263 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_660263 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_877355 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_877355 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_924969 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_924969 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_1166924 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_1166924 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_1340675 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_1340675 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_1729543 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_1729543 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_1763369 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_1763369 - ShieldZero.png",
+                credit: "genericat",
+            },
+            {
+                big: "/events/27/koishiteruzombie_videoframe_2248842 - ShieldZero.png",
+                thumb: "/events/27/koishiteruzombie_videoframe_2248842 - ShieldZero.png",
+                credit: "genericat",
+            },
+        ],
+    },
+
+    // 2 — Oct 24, 2022
+    {
+        id: 2,
+        title: "Ollie's Do Not Subscribe 1,000,000",
+        date: "Oct 24, 2022",
+        thumb: "/events/2/screenshot - Andrew (bricks04).JPG",
+        desc: `
+<div>
+For Ollie's 1,000,000 subscriber milestone, Ollie streamed an Unsubathon:
+a unique subathon where the goal is to get people to unsubscribe to delay
+her milestone. This did not work.
+<div class="text-right">- Andrew!</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/2/screenshot - Andrew (bricks04).JPG",
+                thumb: "/events/2/screenshot - Andrew (bricks04).JPG",
+                credit: "Andrew!",
+            },
+            {
+                big: "/events/2/unsubscribe - Andrew (bricks04).JPG",
+                thumb: "/events/2/unsubscribe - Andrew (bricks04).JPG",
+                credit: "Andrew!",
+            },
+        ],
+    },
+
+    // 10 — Dec 7, 2022
+    {
+        id: 10,
+        title: "ホロテス debut",
+        date: "Dec 7, 2022",
+        thumb: "/events/10/Screenshot_20251119_140125_X - 数学博士.jpg",
+        desc: `
+<div>
+Ollie appeared on the (old) hololive official fc video. It was her first
+(and last) time appearing on the fc videos.
+<div class="text-right">- suugakuhakase</div>
+</div>
+`.trim(),
+        slides: [
+            {
+                big: "/events/10/Screenshot_20251119_140125_X - 数学博士.jpg",
+                thumb: "/events/10/Screenshot_20251119_140125_X - 数学博士.jpg",
+                credit: "suugakuhakase",
+            },
+        ],
+    },
 ];
-
-const specialThanks = [
-    "Special thanks to our beloved oshi. Super Kawaii Zombie Idol - Kureiji Ollie!",
-];
-
-const donors = [
-    "mCooperative",
-    "Hipo",
-    "Oh Deer",
-    "Salocin",
-    "zebesian",
-    "Jiří K",
-    "SUUGAKUHAKASE",
-    "Sandro",
-    "IceWhale",
-    "silentnerv",
-    "Sorin Sorrel",
-    "Trevor",
-    "ChaoticHarlequin",
-    "Ha//voq",
-    "Salade",
-    "TheDiablo",
-    "DerAndi",
-    "nesabao",
-    "NoxCaelis",
-    "火犬",
-    "Anon",
-    "TAPEt",
-    "Rrazz",
-].sort((a, b) =>
-    a.localeCompare(b, undefined, { sensitivity: "base", numeric: true }),
-);
 ---
-
-<Layout>
-    <div class="home min-h-screen">
-        <main class="min-h-screen flex flex-col">
-            <div class="text-[4rem] text-center text-white">Credits</div>
-
-            <div
-                class="bg-white/50 rounded-2xl max-w-7xl mx-auto p-8 mb-4 w-full"
-            >
-                <div class="grid gap-8">
-                    <!-- Team -->
-                    <section class="space-y-4">
-                        <h3
-                            class="text-3xl font-extrabold tracking-tight text-gray-900"
-                        >
-                            Team
-                        </h3>
-                        <div
-                            class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-gray-900"
-                        >
-                            {
-                                team.map(({ role, name }) => (
-                                    <div class="flex items-start gap-3 rounded-xl bg-white/70 p-4">
-                                        <div class="h-2.5 w-2.5 mt-2 rounded-full bg-pink-400/80 shrink-0" />
-                                        <div class="leading-tight">
-                                            <div class="font-semibold">
-                                                {role}
-                                            </div>
-                                            <div class="text-gray-700">
-                                                {name}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </section>
-
-                    <!-- Special Thanks -->
-                    <section class="space-y-4">
-                        <h3
-                            class="text-3xl font-extrabold tracking-tight text-gray-900"
-                        >
-                            Special Thanks
-                        </h3>
-                        <div
-                            class="rounded-2xl bg-gradient-to-br from-white/80 to-white/60 p-6"
-                        >
-                            <ul class="space-y-2 text-gray-900">
-                                {
-                                    specialThanks.map((line) => (
-                                        <li class="flex items-start gap-3">
-                                            <span class="mt-1 h-2 w-6 rounded bg-pink-400/70 inline-block" />
-                                            <span class="text-lg">{line}</span>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-                    </section>
-
-                    <!-- Donors -->
-                    <section class="space-y-4">
-                        <div
-                            class="flex items-center justify-between flex-wrap gap-3"
-                        >
-                            <h3
-                                class="text-3xl font-extrabold tracking-tight text-gray-900"
-                            >
-                                Donators
-                            </h3>
-                            <div class="text-sm text-gray-700/90">
-                                Total: {donors.length.toLocaleString()}
-                            </div>
-                        </div>
-
-                        <div
-                            class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                        >
-                            {
-                                donors.map((name) => (
-                                    <div class="rounded-xl bg-white/70 px-4 py-3 text-gray-900 shadow-sm hover:shadow transition-shadow">
-                                        {name}
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </section>
-                </div>
-            </div>
-
-            <div class="text-white text-center py-4">
-                Not affiliated with COVER Corp., hololive, or holostars talents
-                in any way.
-            </div>
-        </main>
-    </div>
-</Layout>
