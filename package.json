@@ -9,8 +9,18 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.14.6",
+    "csv-parse": "^6.1.0",
+    "dayjs": "^1.11.19",
+    "googleapis": "^166.0.0",
+    "node-fetch": "3",
     "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,10 +1,41 @@
 ---
-import { events } from "../const/event.astro";
-const initialEvent = events[0];
-const initialSlide = initialEvent?.slides?.[0];
-const eventsJson = JSON.stringify(events)
-    .replace(/<\/script/gi, "<\\/script")
-    .replace(/</g, "\\u003c");
+import events from "../const/events.json";
+const eventsJson = JSON.stringify(
+    events.map((x, index) => {
+        return {
+            id: index,
+            title: x.eventName,
+            date: formatShortDateNoLib(x.eventDateISO),
+            thumb: x.images[0].localPath,
+            desc: `
+<div>
+${x.description}
+<div class="text-right">- ${x.author}</div>
+</div>
+`.trim(),
+            slides: x.images.map((y) => {
+                return {
+                    big: y.localPath,
+                    thumb: y.localPath,
+                    credit: x.author,
+                };
+            }),
+        };
+    }),
+);
+const eventsData = JSON.parse(eventsJson);
+const initialEvent = eventsData[0];
+const initialSlide = eventsData?.slides?.[0];
+function formatShortDateNoLib(iso: string) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
 ---
 
 <div id="container">
@@ -33,23 +64,12 @@ const eventsJson = JSON.stringify(events)
                     data-carousel-prev
                     class="absolute z-40 flex w-10 sm:w-14 md:w-18 items-center justify-center rounded-full bg-transparent transition hover:translate-y-1 active:translate-y-2 mt-8 mx-2 sm:mx-4 md:mx-8"
                 >
-                    <flex
-                        flex-col
-                        md:flex-row
-                        mt-4
-                        sm:mt-5
-                        md:mt-6
-                        gap-4
-                        sm:gap-6
-                        md:gap-8
-                        src="./left-button.png"
-                        alt=""
-                        class="h-full w-full"></flex>
+                    <img src="./left-button.png" alt="" class="h-full w-full" />
                 </button>
                 <div class="filmstrip-wrapper">
                     <div class="filmstrip-track" data-carousel-thumbs>
                         {
-                            events.map((event, index) => (
+                            eventsData.map((e, index) => (
                                 <button
                                     type="button"
                                     class="filmstrip-tile"
@@ -60,17 +80,15 @@ const eventsJson = JSON.stringify(events)
                                 >
                                     <img
                                         src={
-                                            event.thumb ??
-                                            event.slides?.[0]?.thumb ??
-                                            event.slides?.[0]?.big ??
+                                            e.thumb ??
+                                            e.slides?.[0]?.thumb ??
+                                            e.slides?.[0]?.big ??
                                             ""
                                         }
-                                        alt={event.title}
+                                        alt={e.title}
                                         class="h-full w-full object-cover"
                                     />
-                                    <span class="text-[12px]">
-                                        {event.title}
-                                    </span>
+                                    <span class="text-[12px]">{e.title}</span>
                                 </button>
                             ))
                         }
